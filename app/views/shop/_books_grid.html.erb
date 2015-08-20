@@ -1,0 +1,23 @@
+<div id="books-grid" class="col-md-9">
+  <% rows = @paginate.parse_books(@books) %>
+  <% rows.each do |row| %>
+    <div class="row">
+
+      <% row.each do |book| %>
+        <div class="col-md-4">
+          <a href="<%= book_path(book.id) %>" class="thumbnail">
+            <img src="<%= image_path('book.jpeg') %>" alt="...">
+
+            <p></p>
+            <span class="book-title"><%= book.title %></span>
+
+            <p class="text-center">
+              <span class="label label-primary book-price">$<%= book.price %></span>
+            </p>
+          </a>
+        </div>
+      <% end %>
+
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,69 @@
+<div class="container">
+  <div class="container col-md-3">
+    <h3>Checkout</h3>
+  </div>
+  
+  <div class="container col-md-9">
+    <% @sel_step = 1 %>
+    <%= render 'breadcrumbs' %>
+  </div>
+
+  <% if @order.errors.any? %>
+    <div class="container col-md-12">
+      <div id="error_explanation" class="alert alert-danger" role="alert">
+        <h3>Errors prohibited this settings from being saved:</h3>
+        <ul>
+          <% if @order.errors.any? %>
+            <strong>Order:</strong>
+              <% @order.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          <% end %>
+        </ul> 
+      </div>
+    </div>
+  <% end %>
+
+  <div class="container col-md-4">
+    <h3>&nbsp</h3>
+    <%= form_tag(save_cart_delivery_path, method: 'PATCH') do %>
+      <br>
+      <% ship_var = Order.ship_variants %>
+      <% ship_var.each do |v| %>
+        <h5>
+          <%= radio_button_tag('shipping', v.price, (v.price == @order.shipping)) %>
+          <%= label_tag("shipping_#{v.price}", v.descript) %>
+        </h5>
+      <% end %>
+      <br>
+      <input class="btn btn-default" name="commit" type="submit" value="SAVE AND CONTINUE">
+    <% end %>
+  </div>
+  <div class="container col-md-4"></div>
+  <div class="container col-md-4">
+    <h3 class="el-underlined">ORDER SUMMARY</h3>
+    <div class="right_text_align">
+      <h3>
+        <small>ITEM TOTAL: &nbsp</small>
+        <span id="order_sum_data" class="hidden"><%= @order.subtotal_price.to_f %></span>
+        $<%= '%.2f' % @order.subtotal_price.to_f %>
+      </h3>
+    </div>
+    <div class="right_text_align">
+      <h3>
+        <small>SHIPPING: &nbsp</small>
+        <span id="ship_sum_text">
+          $<%= '%.2f' % @order.shipping.to_f %>
+        </span>
+      </h3>
+    </div>
+    <div class="right_text_align">
+      <h3>
+        <small>ORDER TOTAL: &nbsp</small>
+        <span id="order_total_sum_text">
+          $<%= '%.2f' % @order.total_price.to_f %>
+        </span>
+      </h3>
+    </div>
+  </div>
+</div>

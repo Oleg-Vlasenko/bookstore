@@ -1,0 +1,131 @@
+<div class="container">
+  <% if @order.errors.any? %>
+    <div id="error_explanation" class="alert alert-danger" role="alert">
+      <h3><%= pluralize(@order.errors.count, "error") %> prohibited this order from being saved:</h3>
+
+      <ul>
+        <% @order.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <% @order.items.each_with_index do |item, idx| %>
+    <% if item.errors.any? %>
+      <div id="error_explanation" class="alert alert-danger" role="alert">
+        <h3><%= pluralize(item.errors.count, "error") %> prohibited order item <%= idx.to_s %> from being saved:</h3>
+
+        <ul>
+          <% item.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+  <% end %>
+</div>
+
+<%= form_for(@order) do |f| %>
+  <div class="container">
+    <table id="order-table" class="table table-hover">
+        <tr>
+          <th class="col-md-8 text-center" colspan="2">
+            <h3>
+              <small>BOOK</small>
+            </h3>
+          </th>
+          <th class="col-md-1 text-center">
+            <h3>
+              <small>PRICE</small>
+            </h3>
+          </th>
+          <th class="col-md-1 text-center">
+            <h3>
+              <small>QTY</small>
+            </h3>
+          </th>
+          <th class="col-md-1 text-center">
+            <h3>
+              <small>TOTAL</small>
+            </h3>
+          </th>
+          <th class="col-md-1">
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+      <% @order.items.each do |item| %>
+        <% item_num = item.new_record? ? "new_item" : "item_#{item.id}" %>
+        <input id="<%= "#{item_num}_book_id" %>" name="<%= "#{item_num}_book_id" %>" hidden="hidden" value="<%= item.book.id %>"/>
+        <input class="oi-del-flag" id="<%= "#{item_num}_del_flag" %>" name="<%= "#{item_num}_del_flag" %>" hidden="hidden" value="0"/>
+        <tr class="<%= 'field_with_errors' if item.errors.any? %>" speclabel="order-item">
+          <td class="col-md-2">
+            <img src="<%= image_path('book.jpeg') %>" width="108" height="108" alt="...">
+          </td>
+          <td class="col-md-6">
+            <h3><%= item.book.title %></h3>
+            <p><%= item.book.description %></p>
+          </td>
+          <td class="col-md-1 text-right">
+            <h3>$<%= '%.2f' % item.price.to_f %></h3>
+          </td>
+          <td class="col-md-1">
+            <input id="<%= "#{item_num}_qty" %>" name="<%= "#{item_num}_qty" %>" type="text" class="form-control" value="<%= item.quantity %>" speclabel="item-quantity">
+          </td>
+          <td class="col-md-1 text-right">
+            <h3>$<%= '%.2f' % item.total_sum.to_f %></h3>
+          </td>
+          <td class="col-md-1 text-right">
+            <button type="button" class="btn btn-default btn-sm oi-btn-del" del-flag-id="<%= "#{item_num}_del_flag" %>">X</button>
+          </td>
+        </tr>
+      <% end %>
+      <tr>
+        <td class="col-md-12 text-right" colspan="5">
+          <h3 speclabel="subtotal-price">
+            <small>SUBTOTAL &nbsp</small>
+            $<%= '%.2f' % @order.subtotal_price %>
+          </h3>
+        </td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="container">
+    <div class="col-md-7">
+      <button type="button" id='btn-empty-cart' class="btn btn-default" speclabel="empty-cart">EMPTY CART</button>
+      <%= link_to 'CONTINUE SHOPPING', shop_path, { class: 'btn btn-default', speclabel: 'continue-shopping' } %>
+    </div>
+    <div class="col-md-2 text-right">
+      <input type="text" class="form-control" placeholder="Coupon code">
+    </div>
+    <div class="col-md-3 text-right">
+      <%= f.submit 'UPDATE', { class: 'btn btn-default', speclabel: 'update' } %>
+      <%= link_to 'CHECKOUT', checkout_address_path, { class: 'btn btn-default', speclabel: 'checkout' } %>
+    </div>
+  </div>
+  <div class="container">
+    <h1>&nbsp</h1>
+  </div>
+<% end %>
+  
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+    <%= form_tag("empty_cart/#{@order.id}", method: 'post') do %>
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="myModalLabel">Confirm</h4>
+        </div>
+        <div class="modal-body">
+          <h3>Do you really want to empty cart?</h3>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+          <%= submit_tag('Empty', class: 'btn btn-danger') %>
+        </div>
+      </div>
+  <% end %>
+  </div>
+</div>  

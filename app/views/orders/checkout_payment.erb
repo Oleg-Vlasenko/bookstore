@@ -1,0 +1,74 @@
+<div class="container">
+  <div class="container col-md-3">
+    <h3>Checkout</h3>
+  </div>
+  
+  <div class="container col-md-9">
+    <% @sel_step = 2 %>
+    <%= render 'breadcrumbs' %>
+  </div>
+
+  <% if @card.errors.any? %>
+    <div class="container col-md-12">
+      <div id="error_explanation" class="alert alert-danger" role="alert">
+        <h3>Errors prohibited this settings from being saved:</h3>
+        <ul>
+          <% if @card.errors.any? %>
+            <strong>Credit card:</strong>
+              <% @card.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          <% end %>
+        </ul> 
+      </div>
+    </div>
+  <% end %>
+  
+  <div class="container col-md-4">
+    <%= form_tag(save_cart_payment_path, method: 'PATCH', class: 'form-inline') do %>
+    <h3 class="el-underlined">CREDIT CARD</h3>
+      <br><br>
+      <%= text_field_tag('number', @card.number,  class: 'form-control', placeholder: 'Card Number') %>
+      <br><br>
+      <h5>Expiration date:</h5>
+      <% ccard_date = "#{@card.expiration_month}/01/#{@card.expiration_year}" %>
+      <%= text_field_tag('expiration-label', '', class: 'form-control', placeholder: 'Month, year', readonly: 'readonly') %>
+      <%= text_field_tag('datepicker-btn', ccard_date, class: 'hidden') %>
+      <%= text_field_tag('expiration_month', @card.expiration_month, class: 'hidden') %>
+      <%= text_field_tag('expiration_year', @card.expiration_year, class: 'hidden') %>
+      <br><br>
+      <%= text_field_tag('CVV', @card.CVV,  class: 'form-control', placeholder: 'Card Code') %>
+      <br><br>
+      <input class="btn btn-default" name="commit" type="submit" value="SAVE AND CONTINUE">
+    <% end %>
+  </div>
+
+  <div class="container col-md-4"></div>
+
+  <div class="container col-md-4">
+    <h3 class="el-underlined">ORDER SUMMARY</h3>
+    <div class="right_text_align">
+      <h3>
+        <small>ITEM TOTAL: &nbsp</small>
+        $<%= '%.2f' % @order.subtotal_price.to_f %>
+      </h3>
+    </div>
+    <div class="right_text_align">
+      <h3>
+        <small>SHIPPING: &nbsp</small>
+        <span id="ship_sum_text">
+          $<%= '%.2f' % @order.shipping.to_f %>
+        </span>
+      </h3>
+    </div>
+    <div class="right_text_align">
+      <h3>
+        <small>ORDER TOTAL: &nbsp</small>
+        <span id="order_sum_data" class="hidden"><%= @order.total_price.to_f %></span>
+        <span id="order_total_sum_text">
+          $<%= '%.2f' % @order.total_price.to_f %>
+        </span>
+      </h3>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,51 @@
+<div class="container">
+  <h3 id="book-title">
+    New review for
+    <small><a href="<%= book_path(@review.book.id) %>"><%= @review.book.title %></a></small>
+  </h3>
+</div>
+
+<%= form_tag(book_reviews_path(@review.book.id), method: 'post') do %>
+  <% if @review.errors.any? %>
+    <div class="container">
+      <div id="error_explanation" class="alert alert-danger" role="alert">
+        <h3><%= pluralize(@review.errors.count, "error") %> prohibited this review from being saved:</h3>
+
+        <ul>
+          <% @review.errors.full_messages.each do |message| %>
+            <li><%= message %></li>
+          <% end %>
+        </ul>
+      </div>
+    </div>
+  <% end %>
+
+  <br>
+  <div class="container">
+    <%= render_editable_rating_stars(@review.rating) %>
+  </div>
+
+  <div class="container">
+    <div class="container col-md-8 no-padding-left">
+      <br>
+      <%= label_tag :title %>
+      <%= text_field_tag :title, @review.title, name: 'review[title]', class: 'form-control', placeholder: 'Enter title' %>
+      <br>
+      <%= label_tag 'Text review'.to_sym %>
+      <textarea id="review" name="review[review_text]" class="form-control" rows="5" placeholder="Enter review"><%= @review.review_text %></textarea>
+    </div>
+    <div class="container col-md-4"></div>
+  </div>
+
+  <div class="container">
+    &nbsp
+  </div>
+  <div class="container">
+    <input id="customer_id" name="review[customer_id]" hidden="hidden" value="<%= @review.customer.id %>"/>
+    <input id="book_id" name="review[book_id]" hidden="hidden" value="<%= @review.book.id %>"/>
+
+    <%= submit_tag "ADD", class: "btn btn-default" %>
+    &nbsp or &nbsp
+    <a href="<%= book_path(@review.book.id) %>">Cancel</a>
+  </div>
+<% end %>

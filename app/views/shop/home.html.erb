@@ -1,0 +1,46 @@
+<div class="container" xmlns="http://www.w3.org/1999/html">
+  <h3 id="book-title">
+    <a href="<%= book_path(@book) %>"><%= @book.title %></a>
+    <small id="author-name">by <%= @book.author.name %></small>
+  </h3>
+</div>
+
+<div class="container">
+  <div class="col-md-1 my-side-navbox">
+    <a id="prev-book" href="<%= home_path(id: @prev_id) %>">
+      <span class="glyphicon glyphicon-chevron-left my-side-arrow"></span>
+    </a>
+  </div>
+  <div class="col-md-3">
+    <img src="<%= image_path('big_book.jpg') %>" width="250" height="250" alt="...">
+  </div>
+  <div class="col-md-7">
+    <p id="book-description"><%= @book.description %></p>
+
+    <div class="container">
+      <% if signed_in? %>
+        <%= form_tag new_order_item_path(), method: 'post', class: 'form-inline' do %>
+          <label><h4 id="book-price">$<%= @book.price %></h4></label>&nbsp;
+          <%= text_field_tag :quantity, '', class: 'form-control', id: 'books_amount', placeholder: '1', value: '1' %>
+          <%= text_field_tag :book_id, @book.id, hidden: 'hidden' %>
+          <%= submit_tag 'ADD TO CART', { class: 'btn btn-default', speclabel: 'add-to-cart' } %>
+        <% end %>
+      <% else %>
+        <label><h4 id="book-price">$<%= @book.price %></h4></label>
+      <% end %>
+    </div>
+  </div>
+  <div class="col-md-1 my-side-navbox">
+    <a href="<%= home_path(id: @next_id) %>" id="next-book">
+      <span class="glyphicon glyphicon-chevron-right my-side-arrow"></span>
+    </a>
+  </div>
+</div>
+
+<div class="container">
+  <div class="col-md-3"></div>
+  <div class="col-md-6">
+    <h3>Welcome to our amazing Bookstore! Choose anything you wish, we'll ship it anywhere!</h3>
+  </div>
+  <div class="col-md-3"></div>
+</div>

@@ -1,0 +1,170 @@
+<!--order-->
+<div class="container">
+  <% if @order %>
+    <table id="order-table" class="table" speclabel="order">
+      <thead>
+        <tr>
+          <th class="col-md-12 td-underlined" colspan="5">
+            <h3>IN PROGRESS</h3>
+          </th>
+        </tr>
+        <tr>
+          <th class="col-md-9 text-center" colspan="2">
+            <h3>
+              <small>BOOK</small>
+            </h3>
+          </th>
+          <th class="col-md-1 text-center">
+            <h3>
+              <small>PRICE</small>
+            </h3>
+          </th>
+          <th class="col-md-1 text-center">
+            <h3>
+              <small>QTY</small>
+            </h3>
+          </th>
+          <th class="col-md-1 text-center">
+            <h3>
+              <small>TOTAL</small>
+            </h3>
+          </th>
+        </tr>
+      </thead>
+  
+      <tbody>
+        <% @order.items.each do |item| %>
+          <tr speclabel="order_item">
+            <td class="col-md-2">
+              <img src="<%= image_path('book.jpeg') %>" width="108" height="108" alt="...">
+            </td>
+            <td class="col-md-7">
+              <h3><%= item.book.title %></h3>
+              <p><%= item.book.description %></p>
+            </td>
+            <td class="col-md-1 text-right">
+              <h3>$<%= '%.2f' % item.price.to_f %></h3>
+            </td>
+            <td class="col-md-1 text-right">
+              <h3><%= item.quantity %></h3>
+            </td>
+            <td class="col-md-1 text-right">
+              <h3>$<%= '%.2f' % item.total_sum.to_f %></h3>
+            </td>
+          </tr>
+        <% end %>
+        <tr>
+          <td class="col-md-4 td-top-underlined" colspan="2">
+            <%= form_tag(cart_path, method: :get) do %>
+              <%= submit_tag('GO TO CART', class: 'btn btn-default') %>
+            <% end %>
+          </td>
+          <td class="col-md-8 text-right td-top-underlined" colspan="3">
+            <h3>
+              <small>SUBTOTAL &nbsp</small>
+              $<%= '%.2f' % @order.subtotal_price.to_f %>
+            </h3>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  <% end %>
+
+  <% if @completed_orders.length > 0 %>
+    <table id="order-table" class="table" speclabel="completed_orders">
+      <thead>
+        <tr>
+          <th class="col-md-12 td-underlined" colspan="5">
+            <h3>COMPLETED</h3>
+          </th>
+        </tr>
+        <tr>
+          <th class="col-md-2">
+            <h3>
+              <small>NUMBER</small>
+            </h3>
+          </th>
+          <th class="col-md-2">
+            <h3>
+              <small>COMPLETED AT</small>
+            </h3>
+          </th>
+          <th class="col-md-2">
+            <h3>
+              <small>TOTAL</small>
+            </h3>
+          </th>
+          <th class="col-md-6" colspan="2">
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @completed_orders.each do |order| %>
+          <tr>
+            <td class="col-md-2">
+              <p>R<%= "%08d" % order.id %></p>
+            </td>
+            <td class="col-md-2">
+              <p><%= order.completed_date %></p>
+            </td>
+            <td class="col-md-2">
+              <p>(<%= order.items.length %>) $<%= '%.2f' % order.total_price %></p>
+            </td>
+            <td class="col-md-6" colspan="2">
+              <a href="<%= order_path(order) %>">View</a>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+  
+  <% if @shipped_orders.length > 0 %>
+    <table id="order-table" class="table" speclabel="shipped_orders">
+      <thead>
+        <tr>
+          <th class="col-md-12 td-underlined" colspan="5">
+            <h3>SHIPPED</h3>
+          </th>
+        </tr>
+        <tr>
+          <th class="col-md-2">
+            <h3>
+              <small>NUMBER</small>
+            </h3>
+          </th>
+          <th class="col-md-2">
+            <h3>
+              <small>COMPLETED AT</small>
+            </h3>
+          </th>
+          <th class="col-md-2">
+            <h3>
+              <small>TOTAL</small>
+            </h3>
+          </th>
+          <th class="col-md-6" colspan="2">
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @shipped_orders.each do |order| %>
+          <tr>
+            <td class="col-md-2">
+              <p>R<%= "%08d" % order.id %></p>
+            </td>
+            <td class="col-md-2">
+              <p><%= order.completed_date %></p>
+            </td>
+            <td class="col-md-2">
+              <p>(<%= order.items.length %>) $<%= '%.2f' % order.total_price %></p>
+            </td>
+            <td class="col-md-6" colspan="2">
+              <a href="<%= order_path(order) %>">View</a>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+</div>

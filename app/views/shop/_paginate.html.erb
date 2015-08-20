@@ -1,0 +1,11 @@
+<div class="container text-center">
+  <ul class="pagination">
+    <%= render_paginate_btn(@paginate.first_btn) %>
+    <%= render_paginate_btn(@paginate.prev_btn) %>
+    <% @paginate.page_btns.each do |button| %>
+      <%= render_paginate_btn(button) %>
+    <% end %>
+    <%= render_paginate_btn(@paginate.next_btn) %>
+    <%= render_paginate_btn(@paginate.last_btn) %>
+  </ul>
+</div>

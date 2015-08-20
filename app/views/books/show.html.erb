@@ -1,0 +1,62 @@
+<div class="container">
+  <h3 id="book-title">
+    <%= @book.title %>
+    &nbsp
+    <small id="author-name">by <%= @book.author.name %></small>
+  </h3>
+</div>
+
+<div class="container">
+  <div class="col-md-4">
+    <img src="<%= image_path('big_book.jpg') %>" width="250" height="250" alt="...">
+  </div>
+  <div class="col-md-8">
+    <div class="container">
+      <% if signed_in? %>
+        <%= form_tag new_order_item_path(), method: 'post', class: 'form-inline' do %>
+          <label><h4 id="book-price">$<%= @book.price %></h4></label>&nbsp;
+          <%= text_field_tag :quantity, '', class: 'form-control', id: 'books_amount', placeholder: '1', value: '1' %>
+          <%= submit_tag 'ADD TO CART', class: 'btn btn-default' %>
+          <%= text_field_tag :book_id, @book.id, hidden: 'hidden' %>
+        <% end %>
+      <% else %>
+        <label><h4 id="book-price">$<%= @book.price %></h4></label>
+      <% end %>
+    </div>
+    <div class="container">&nbsp</div>
+
+    <p id="book-description"><%= @book.description %></p>
+  </div>
+</div>
+
+<div class="container">
+  <h3>Reviews &nbsp&nbsp
+    <% if signed_in? %>
+      <small><a class="add-review" href=<%= new_book_review_path(@book) %>>Add review for this book</a></small>
+    <% end %>
+  </h3>
+</div>
+
+<% @book.reviews.each do |review| %>
+  <div class="container">
+    <div class="col-md-2 no-padding-left">
+      <%= render_rating_stars(review.rating) %>
+    </div>
+  </div>
+  <div class="container">
+    <div class="col-md-3 no-padding-left">
+      <p class="review-title"><%= review.title %></p>
+    </div>
+    <div class="col-md-7">
+      <var class="review-date"><%= review.created_at.strftime("%b %d, %Y") %></var>
+    </div>
+  </div>
+
+  <div class="container">
+    <p class="review-author"><em>by <%= review.customer.name %></em></p>
+
+    <p class="review-review"><%= review.review_text %></p>
+  </div>
+
+  <div class="container">&nbsp</div>
+<% end %>

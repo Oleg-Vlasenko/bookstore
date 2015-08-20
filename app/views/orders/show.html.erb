@@ -1,0 +1,83 @@
+<div class="container">
+<a href="<%= orders_path %>"><< Back to orders</a>
+</div>
+<div class="container">
+<h3>
+  <span speclabel="order"><%= "Order R#{"%08d" % @order.id}" %></span>&nbsp &nbsp<small><%= @order.state %></small>
+</h3>
+</div>
+<div class="container">
+  <table id="order-table" class="table table-hover">
+    <thead>
+      <tr>
+        <th class="col-md-9 text-center" colspan="2">
+          <h3>
+            <small>BOOK</small>
+          </h3>
+        </th>
+        <th class="col-md-1 text-center">
+          <h3>
+            <small>PRICE</small>
+          </h3>
+        </th>
+        <th class="col-md-1 text-center">
+          <h3>
+            <small>QTY</small>
+          </h3>
+        </th>
+        <th class="col-md-1 text-center">
+          <h3>
+            <small>TOTAL</small>
+          </h3>
+        </th>
+      </tr>
+    </thead>
+  
+    <tbody>
+      <% @order.items.each do |item| %>
+        <tr speclabel="order-item">
+          <td class="col-md-2">
+            <img src="<%= image_path('book.jpeg') %>" width="108" height="108" alt="...">
+          </td>
+          <td class="col-md-7">
+              <h3 speclabel="book-title"><%= item.book.title %></h3>
+              <p><%= item.book.description %></p>
+          </td>
+          <td class="col-md-1 text-right">
+            <h3 speclabel="book-price">$<%= '%.2f' % item.price.to_f %></h3>
+          </td>
+          <td class="col-md-1 text-right">
+            <h3 speclabel="book-qnt"><%= item.quantity %></h3>
+          </td>
+          <td class="col-md-1 text-right">
+              <h3 speclabel="book-sum">$<%= '%.2f' % item.total_sum.to_f %></h3>
+          </td>
+        </tr>
+      <% end %>
+      <tr>
+        <td class="col-md-8 text-right td-top-underlined" colspan="5">
+          <h3>
+            <small>SUBTOTAL &nbsp</small>
+            <span speclabel="subtotal-price">$<%= '%.2f' % @order.subtotal_price.to_f %></span>
+          </h3>
+        </td>
+      </tr>
+      <tr>
+        <td class="col-md-8 text-right" colspan="5">
+          <h3>
+            <small>SHIPPING &nbsp</small>
+            <span speclabel="shipping-sum">$<%= @order.shipping.to_f %></span>
+          </h3>
+        </td>
+      </tr>
+      <tr>
+        <td class="col-md-8 text-right td-top-underlined" colspan="5">
+          <h3>
+            <small>ORDER TOTAL &nbsp</small>
+            <span speclabel="total-price">$<%= '%.2f' % @order.total_price.to_f %></span>
+          </h3>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

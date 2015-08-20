@@ -1,0 +1,114 @@
+<div class="container">
+  <%= form_for @order, url: save_cart_address_path  do |f| %>
+
+    <div class="container col-md-3">
+      <h3>Checkout</h3>
+    </div>
+    
+    <div class="container col-md-9">
+      <% @sel_step = 0 %>
+      <%= render 'breadcrumbs' %>
+    </div>
+
+    <% if @order.errors.any? %>
+      <div class="container col-md-12">
+        <div id="error_explanation" class="alert alert-danger" role="alert">
+          <h3>Errors prohibited this settings from being saved:</h3>
+          <ul>
+            <% if @order.errors.any? %>
+              <strong>Order:</strong>
+                <% @order.errors.full_messages.each do |message| %>
+                <li><%= message %></li>
+              <% end %>
+            <% end %>
+          </ul> 
+        </div>
+      </div>
+    <% end %>
+
+    <div class="container col-md-4">
+      <h3 class="el-underlined">BILLING ADDRESS</h3>
+      <br>
+    </div>
+    <div class="container col-md-4">
+      <h3 class="el-underlined">SHIPPING ADDRESS</h3>
+      <br>
+    </div>
+    <div class="container col-md-4">
+      <h3 class="el-underlined">ORDER SUMMARY</h3>
+      <br>
+    </div>
+    <div class="container col-md-3">
+      <%= f.fields_for @order.billing_address do |s_a| %>
+        <%= s_a.hidden_field :id %>
+        
+        <%= s_a.text_field :first_name, class: 'form-control', placeholder: 'First name' %>
+        <br>
+        <%= s_a.text_field :last_name, class: 'form-control', placeholder: 'Last name' %>
+        <br>
+        <%= s_a.text_field :address, class: 'form-control', placeholder: 'Street Address' %>
+        <br>
+        <%= s_a.text_field :city, class: 'form-control', placeholder: 'City' %>
+        <br>
+  
+        <% opt = options_for_select(Country.all.collect { |c| [c.name, c.id] }, @order.billing_address.country_id) %>
+        <%= s_a.select :country_id, opt, {}, { class: 'form-control', prompt: 'Select country', placeholder: 'Country' } %>
+        <br>
+  
+        <%= s_a.text_field :zip_code, class: 'form-control', placeholder: 'Zip-code' %>
+        <br>
+        <%= s_a.text_field :phone, class: 'form-control', placeholder: 'Phone' %>
+      <% end %>
+      <br>
+      
+      <input class="btn btn-default" name="commit" type="submit" value="SAVE AND CONTINUE">
+    </div>
+    <div class="container col-md-1"></div>
+    <div class="container col-md-3">
+      <div id="cart_shipping_address_block" class=<%= @order.one_address ? "hidden" : "" %>>
+        <%= f.fields_for  @order.shipping_address do |s_a| %>
+          <%= s_a.hidden_field :id %>
+    
+          <%= s_a.text_field :first_name, class: 'form-control', placeholder: 'First name' %>
+          <br>
+          <%= s_a.text_field :last_name, class: 'form-control', placeholder: 'Last name' %>
+          <br>
+          <%= s_a.text_field :address, class: 'form-control', placeholder: 'Street Address' %>
+          <br>
+          <%= s_a.text_field :city, class: 'form-control', placeholder: 'City' %>
+          <br>
+    
+          <% opt = options_for_select(Country.all.collect { |c| [c.name, c.id] }, @order.shipping_address.country_id) %>
+          <%= s_a.select :country_id, opt, {}, { class: 'form-control', prompt: 'Select country', placeholder: 'Country' } %>
+          <br>
+    
+          <%= s_a.text_field :zip_code, class: 'form-control', placeholder: 'Zip-code' %>
+          <br>
+          <%= s_a.text_field :phone, class: 'form-control', placeholder: 'Phone' %>
+        <% end %>
+        <br>
+      </div>
+      
+      <%= check_box_tag('order[one_address]', '1', !@order.one_address.to_i.zero?) %> 
+      <%= label_tag('order_one_address', 'Use Billing Address') %>
+    </div>
+    <div class="container col-md-1"></div>
+    <div class="container col-md-4">
+      <div class="right_text_align">
+        <h3>
+          <small>ITEM TOTAL: &nbsp</small>
+          $<%= '%.2f' % @order.subtotal_price.to_f %>
+        </h3>
+      </div>
+      <div class="right_text_align">
+        <h3>
+          <small>ORDER TOTAL: &nbsp</small>
+          $<%= '%.2f' % @order.total_price.to_f %>
+        </h3>
+      </div>
+    </div>
+  <% end %>
+  <div class="container col-md-12">
+    <br>
+  </div>
+</div>

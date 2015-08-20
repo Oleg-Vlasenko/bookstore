@@ -1,0 +1,141 @@
+<div class="container">
+  <div class="container col-md-3">
+    <h3>Confirm</h3>
+  </div>
+  
+  <div class="container col-md-9">
+      <% @sel_step = 3 %>
+      <%= render 'breadcrumbs' %>
+  </div>
+
+  <div class="container col-md-3">
+    <h4>Billing Address</h4>
+    <% b_a = @order.billing_address %>
+    
+    <br>
+    <h5><%= b_a.first_name %></h5>
+    <h5><%= b_a.last_name %></h5>
+    <h5><%= b_a.address %></h5>
+    <h5><%= b_a.city %></h5>
+    <h5><%= b_a.country.name %></h5>
+    <h5><%= b_a.zip_code %></h5>
+    <h5><%= "Phone #{b_a.phone}" %></h5>
+    <br>
+  </div>
+
+  <div class="container col-md-3">
+    <h4>Shipping Address</h4>
+    <% s_a = @order.shipping_address %>
+    
+    <br>
+    <h5><%= s_a.first_name %></h5>
+    <h5><%= s_a.last_name %></h5>
+    <h5><%= s_a.address %></h5>
+    <h5><%= s_a.city %></h5>
+    <h5><%= s_a.country.name %></h5>
+    <h5><%= s_a.zip_code %></h5>
+    <h5><%= "Phone #{s_a.phone}" %></h5>
+    <br>
+  </div>
+
+  <div class="container col-md-3">
+    <h4>Shipments</h4>
+    <br>
+    <h5><%= @order.get_shipping.name %></h5>
+    <br>
+  </div>
+
+  <div class="container col-md-3">
+    <h4>Payment Information</h4>
+    <% cc = @order.credit_card %>
+    
+    <br>
+    <h5>** ** ** <%= cc.CVV %></h5>
+    <h5><%= "#{cc.expiration_month} / #{cc.expiration_year}" %></h5>
+    <br>
+  </div>
+
+  <div class="container col-md-12">
+    <table id="order-table" class="table">
+      <thead>
+        <tr>
+          <th class="col-md-9 text-center" colspan="2">
+            <h3>
+              <small>BOOK</small>
+            </h3>
+          </th>
+          <th class="col-md-1 text-center">
+            <h3>
+              <small>PRICE</small>
+            </h3>
+          </th>
+          <th class="col-md-1 text-center">
+            <h3>
+              <small>QTY</small>
+            </h3>
+          </th>
+          <th class="col-md-1 text-center">
+            <h3>
+              <small>TOTAL</small>
+            </h3>
+          </th>
+        </tr>
+      </thead>
+  
+      <tbody>
+        <% @order.items.each do |item| %>
+          <tr>
+            <td class="col-md-2">
+              <img src="<%= image_path('book.jpeg') %>" width="108" height="108" alt="...">
+            </td>
+            <td class="col-md-7">
+              <h3><%= item.book.title %></h3>
+              <p><%= item.book.description %></p>
+            </td>
+            <td class="col-md-1 text-right">
+              <h3>$<%= '%.2f' % item.price.to_f %></h3>
+            </td>
+            <td class="col-md-1 text-right">
+              <h3><%= item.quantity %></h3>
+            </td>
+            <td class="col-md-1 text-right">
+              <h3>$<%= '%.2f' % item.total_sum.to_f %></h3>
+            </td>
+          </tr>
+        <% end %>
+        <tr>
+          <td class="col-md-8 text-right td-top-underlined" colspan="5">
+            <h3>
+              <small>SUBTOTAL &nbsp</small>
+              $<%= '%.2f' % @order.subtotal_price.to_f %>
+            </h3>
+          </td>
+        </tr>
+        <tr>
+          <td class="col-md-8 text-right" colspan="5">
+            <h3>
+              <small>SHIPPING &nbsp</small>
+              $<%= @order.shipping.to_f %>
+            </h3>
+          </td>
+        </tr>
+        <tr>
+          <td class="col-md-8 td-top-underlined" colspan="2">
+            <%= form_tag(checkout_complete_path, method: 'PATCH') do %>
+              <input class="btn btn-default" name="commit" type="submit" value="PLACE ORDER">
+            <% end %>
+          </td>
+          <td class="col-md-8 text-right td-top-underlined" colspan="3">
+            <h3>
+              <small>ORDER TOTAL &nbsp</small>
+              $<%= '%.2f' % @order.total_price.to_f %>
+            </h3>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="container col-md-3">
+  </div>
+</div>

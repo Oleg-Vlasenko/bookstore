@@ -1,0 +1,124 @@
+<div class="container">
+<%= form_for @customer do |f| %>
+  <% if @customer.errors.any? || @customer.billing_address.errors.any? || @customer.shipping_address.errors.any? %>
+    <div class="container">
+      <div id="error_explanation" class="alert alert-danger" role="alert">
+        <h3>Errors prohibited this settings from being saved:</h3>
+        <ul>
+          <% if @customer.errors.any? %>
+            <strong>Customer:</strong>
+            <% @customer.errors.full_messages.each do |message| %>
+              <li><%= message %></li>
+            <% end %>
+          <% end %>
+        </ul> 
+      </div>
+    </div>
+  <% end %>
+
+  <div class="container col-md-12">
+    <h3>Settings</h3>
+  </div>
+  
+  <div class="container col-md-6">
+    <h3 class="el-underlined">BILLING ADDRESS</h3>
+    <br>
+  </div>
+  <div class="container col-md-6">
+    <h3 class="el-underlined">SHIPPING ADDRESS</h3>
+    <br>
+  </div>
+  <div class="container col-md-4">
+    <%= f.fields_for @customer.billing_address do |b_a| %>
+      <%= b_a.hidden_field :id %>
+      
+      <%= b_a.text_field :first_name, class: 'form-control', placeholder: 'First name' %>
+      <br>
+      <%= b_a.text_field :last_name, class: 'form-control', placeholder: 'Last name' %>
+      <br>
+      <%= b_a.text_field :address, class: 'form-control', placeholder: 'Street Address' %>
+      <br>
+      <%= b_a.text_field :city, class: 'form-control', placeholder: 'City' %>
+      <br>
+
+      <% opt = options_for_select(Country.all.collect { |c| [c.name, c.id] }, @customer.billing_address.country_id) %>
+      <%= b_a.select :country_id, opt, {}, { class: 'form-control', prompt: 'Select country', placeholder: 'Country' } %>
+      <br>
+
+      <%= b_a.text_field :zip_code, class: 'form-control', placeholder: 'Zip-code' %>
+      <br>
+      <%= b_a.text_field :phone, class: 'form-control', placeholder: 'Phone' %>
+    <% end %>
+  </div>
+  <div class="container col-md-2"></div>
+  <div class="container col-md-4">
+    <%= f.fields_for @customer.shipping_address do |s_a| %>
+      <%= s_a.hidden_field :id %>
+
+      <%= s_a.text_field :first_name, class: 'form-control', placeholder: 'First name' %>
+      <br>
+      <%= s_a.text_field :last_name, class: 'form-control', placeholder: 'Last name' %>
+      <br>
+      <%= s_a.text_field :address, class: 'form-control', placeholder: 'Street Address' %>
+      <br>
+      <%= s_a.text_field :city, class: 'form-control', placeholder: 'City' %>
+      <br>
+
+      <% opt = options_for_select(Country.all.collect { |c| [c.name, c.id] }, @customer.shipping_address.country_id) %>
+      <%= s_a.select :country_id, opt, {}, { class: 'form-control', prompt: 'Select country', placeholder: 'Country' } %>
+      <br>
+
+      <%= s_a.text_field :zip_code, class: 'form-control', placeholder: 'Zip-code' %>
+      <br>
+      <%= s_a.text_field :phone, class: 'form-control', placeholder: 'Phone' %>
+    <% end %>
+  </div>
+  <div class="container col-md-2"></div>
+
+  <div class="container col-md-12">
+    <br>
+  </div>
+
+  <div class="container col-md-6">
+    <h3 class="el-underlined">E-MAIL AND NAME</h3>
+    <br>
+  </div>
+  <div class="container col-md-6">
+    <h3 class="el-underlined">PASSWORD</h3>
+    <br>
+  </div>
+
+  <div class="container col-md-4">
+    <%= f.text_field :email, class: 'form-control', placeholder: 'test@test.com' %>
+    <br>
+    <%= f.text_field :first_name, class: 'form-control', placeholder: 'First name' %>
+    <br>
+    <%= f.text_field :last_name, class: 'form-control', placeholder: 'Last name' %>
+  </div>
+  <div class="container col-md-2"></div>
+  <div class="container col-md-4">
+    <div class="<%= 'field_with_errors' if @customer.errors.messages[:authenticate] %>">
+      <%= label_tag('Old password') %>
+      <br>
+      <%= text_field(:password, :current, class: 'form-control', type: 'password', placeholder: 'Type old password') %>
+      <br>
+      <%= label_tag('New password') %>
+      <br>
+      <%= text_field(:password, :new, class: 'form-control', type: 'password', placeholder: 'Type new password') %>
+      <br>
+    </div>
+  </div>
+  
+  <div class="container col-md-12">
+    <p class="el-underlined"></p>
+  </div>
+  <div class="container col-md-12">
+    <br>
+    <%= f.submit 'SAVE SETTINGS', class: 'btn btn-default' %>
+  </div>
+  <div class="container col-md-12">
+    <br><br>
+  </div>
+<% end %>
+
+</div>

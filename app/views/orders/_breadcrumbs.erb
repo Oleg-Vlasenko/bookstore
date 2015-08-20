@@ -1,0 +1,39 @@
+    <h4>
+    <ol class="breadcrumb">
+      <% curr_step = Customer.cart_states.find_index(@current_customer.cart_state) %>
+
+      <% if @sel_step == 0 %>
+        <li class="active">ADDRESS</li>
+      <% elsif curr_step > 0 %>
+        <li><a href="<%= checkout_address_path %>">ADDRESS</a></li>
+      <% else %>
+        <li>ADDRESS</li>
+      <% end %>
+
+      <% if @sel_step == 1 %>
+        <li class="active">DELIVERY</li>
+      <% elsif curr_step > 1 %>
+        <li><a href="<%= checkout_delivery_path %>">DELIVERY</a></li>
+      <% else %>
+        <li>DELIVERY</li>
+      <% end %>
+
+      <% if @sel_step == 2 %>
+        <li class="active">PAYMENT</li>
+      <% elsif curr_step > 2 %>
+        <li><a href="<%= checkout_payment_path %>">PAYMENT</a></li>
+      <% else %>
+        <li>PAYMENT</li>
+      <% end %>
+
+      <% if @sel_step == 3 %>
+        <li class="active">CONFIRM</li>
+      <% elsif curr_step > 3 %>
+        <li><a href="<%= checkout_confirm_path %>">CONFIRM</a></li>
+      <% else %>
+        <li>CONFIRM</li>
+      <% end %>
+
+      <li>COMPLETE</li>
+    </ol>
+    </h4>

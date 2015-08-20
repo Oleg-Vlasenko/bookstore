@@ -1,0 +1,9 @@
+<div class="container">
+  <h4>SHOP BY CATEGORIES</h4>
+</div>
+
+<ul class="nav nav-pills nav-stacked">
+  <% @categories.each do |category| %>
+    <%= render_category_link(category) %>
+  <% end %>
+</ul>

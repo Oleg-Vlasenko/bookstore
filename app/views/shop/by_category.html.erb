@@ -1,0 +1,23 @@
+<div class="container">
+  <div class="container">
+    <ol class="breadcrumb">
+      <%= render_home_link('Home') %>
+      <%= render_shop_link('Shop') %>
+      <li><%= @category.title %></li>
+    </ol>
+  </div>
+
+  <div class="container">
+    <h3 class="category-name">Categories - <%= @category.title %></h3>
+  </div>
+</div>
+
+<div class="container">
+  <%= render 'books_grid' %>
+
+  <div class="col-md-3">
+    <%= render 'rightbar' %>
+  </div>
+</div>
+
+<%= render 'paginate' %>
