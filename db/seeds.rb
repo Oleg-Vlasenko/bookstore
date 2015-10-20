@@ -31,12 +31,30 @@ category << Category.create(title: 'Guide')
   end
 end
 
+countries = []
 10.times do
-  Country.create(name: Faker::Address.country)
+  countries << Country.create(name: Faker::Address.country)
 end
 
 # admin, for authentication
-c = Customer.create(first_name: 'admin', last_name: Faker::Name.last_name, email: 'admin@adm.com', password: '1', password_confirmation: '1')
+c = Customer.create(first_name: 'Test', last_name: 'User', email: 'test@mail.org', password: 'test', password_confirmation: 'test')
+
+addr_data = []
+2.times do
+  adt = { 
+    first_name: c.first_name,
+    last_name: c.last_name, 
+    country: countries[Random.rand(0..5)],
+    city: Faker::Address.city,
+    address: Faker::Address.street_address,
+    zip_code: Faker::Address.zip_code,
+    phone: Faker::Base.numerify('+38(###) ### ## ##')
+  }
+  addr_data << adt
+end
+c.build_billing_address(addr_data[0])
+c.build_shipping_address(addr_data[1])
+c.save
 
 now = Date.current()
 b = Book.find(20)

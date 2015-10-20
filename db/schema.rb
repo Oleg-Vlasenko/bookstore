@@ -24,11 +24,9 @@ ActiveRecord::Schema.define(version: 20150618131816) do
     t.integer  "country_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "test_id"
   end
 
   add_index "addresses", ["country_id"], name: "index_addresses_on_country_id"
-  add_index "addresses", ["test_id"], name: "index_addresses_on_test_id"
 
   create_table "authors", force: true do |t|
     t.string   "first_name"
@@ -117,7 +115,6 @@ ActiveRecord::Schema.define(version: 20150618131816) do
     t.integer  "shipping_address_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "test_id"
     t.integer  "one_address"
   end
 
@@ -125,7 +122,6 @@ ActiveRecord::Schema.define(version: 20150618131816) do
   add_index "orders", ["credit_card_id"], name: "index_orders_on_credit_card_id"
   add_index "orders", ["customer_id"], name: "index_orders_on_customer_id"
   add_index "orders", ["shipping_address_id"], name: "index_orders_on_shipping_address_id"
-  add_index "orders", ["test_id"], name: "index_orders_on_test_id"
 
   create_table "reviews", force: true do |t|
     t.text     "title"
@@ -142,8 +138,13 @@ ActiveRecord::Schema.define(version: 20150618131816) do
 
   create_table "tests", force: true do |t|
     t.string   "name"
+    t.integer  "billing_address_id"
+    t.integer  "shipping_address_id"
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  add_index "tests", ["billing_address_id"], name: "index_tests_on_billing_address_id"
+  add_index "tests", ["shipping_address_id"], name: "index_tests_on_shipping_address_id"
 
 end

@@ -59,13 +59,27 @@ class Order < ActiveRecord::Base
   
   def init_addresses
     if self.customer
-      unless self.billing_address
-        addr_data = clear_attr(self.customer.billing_address.attributes)
-        self.build_billing_address(addr_data)
+      customer = self.customer
+      customer_name = {
+        first_name: customer.first_name, 
+        last_name: customer.last_name
+      }
+
+      unless self.billing_address 
+        if customer.billing_address
+          addr_data = clear_attr(self.customer.billing_address.attributes)
+          self.build_billing_address(addr_data)
+        else
+          self.build_billing_address(customer_name)
+        end
       end
-      unless self.shipping_address
-        addr_data = clear_attr(self.customer.shipping_address.attributes)
-        self.build_shipping_address(addr_data) 
+      unless self.shipping_address 
+        if customer.shipping_address
+          addr_data = clear_attr(self.customer.shipping_address.attributes)
+          self.build_shipping_address(addr_data)
+        else
+          self.build_shipping_address(customer_name)
+        end
       end
     end
   end
